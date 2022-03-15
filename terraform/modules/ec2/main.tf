@@ -28,7 +28,9 @@ resource "aws_instance" "projet-ec2" {
       "sudo yum install -y git",
       "sudo amazon-linux-extras install -y ansible2",
       "git clone -main https://github.com/${var.git_proprietaire}/${var.git_projet}.git",
+      "ls",
       "cd ${var.git_projet}/ansible",
+      "ls",
       "ansible-galaxy install -r requirements.yml --force",
       "ansible-playbook -i hosts.yml projet.yml"
     ] 

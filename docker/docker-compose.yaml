@@ -1,0 +1,39 @@
+version: '3.3'
+services:
+  docker-mysql:
+    image: mysql:8.0
+    container_name: mysql
+    # utilise si besoin de stocker les données de la bdd sur du storagre AWS
+    volumes:
+      - ./spring_app/mysql-data:/var/lib/mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: 43F3DF26926D1D15F10C492D6BDA6DCFCC0C99AB06B7818E44E77E91D3F1497D
+      MYSQL_DATABASE: myresto
+      MYSQL_USER: allan
+      MYSQL_PASSWORD: All@n2022
+    ports:
+      - "3306:3306"
+  phpmyadmin:
+    restart: always
+    container_name: phpmyadmin
+    depends_on:
+      - docker-mysql
+    image: phpmyadmin/phpmyadmin
+    ports:
+      - "8081:80"
+    environment:
+      PMA_HOST: docker-mysql
+  spring:
+    container_name: springapp
+    restart: always
+    image: projet:latest
+    ports:
+      - "8080:5000"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://docker-mysql/myresto?useSSL=false&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: allan
+      SPRING_DATASOURCE_PASSWORD: All@n2022
+      APP_PORT: 5000
+    depends_on:
+      - docker-mysql

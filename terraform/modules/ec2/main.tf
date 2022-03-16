@@ -27,13 +27,11 @@ resource "aws_instance" "projet-ec2" {
       "sudo yum update -y",
       "sudo yum install -y git",
       "sudo amazon-linux-extras install -y ansible2",
-      "git clone -main https://github.com/${var.git_proprietaire}/${var.git_projet}.git",
-      "ls",
+      "git clone -b main https://github.com/${var.git_proprietaire}/${var.git_projet}.git",
       "cd ${var.git_projet}/ansible/",
-      "ls",
       "ansible-galaxy install -r requirements.yml --force",
       "ansible-playbook -i hosts.yml projet.yml"
-    ] 
+    ]
     connection {
       type        = "ssh"
       user        = "${var.utilisateur_ssh}"
